@@ -9,12 +9,30 @@ package com.mycompany.securepasswordmanager;
  * @author liamf
  */
 public class PasswordManagerGUI extends javax.swing.JFrame {
-
-    /**
-     * Creates new form PasswordManagerGUI
-     */
+    
+    //variables
+    private PasswordManager pm;
+    private int passwordCount;
+    
     public PasswordManagerGUI() {
         initComponents();
+        pm = new PasswordManager();//initiliase PasswordManager
+        passwordCount = pm.getPasswordCount();//get no. of passwords in DB
+        
+        //loadAllPasswords();//when started display all saved&encrypted passwords in the DB
+        updatePasswordLabel();//this method shows how many passwords have been saved e.g "Saved PAsswords: 3"
+    }
+    
+    private void addPassword(String domain, String plainPassword){
+        pm.addPassword(domain,plainPassword);//adds the password to manager
+        passwordCount++;
+        updatePasswordLabel();//updates the no. of passwords counted
+    }
+    
+
+    
+    private void updatePasswordLabel(){
+        SavedPasswordsNumberLBL.setText("SavedPasswords: " + passwordCount);//increment counter every saved pass
     }
 
     /**
@@ -52,10 +70,20 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
         AddPasswordBTN.setBackground(new java.awt.Color(153, 255, 153));
         AddPasswordBTN.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         AddPasswordBTN.setText("Add Password");
+        AddPasswordBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddPasswordBTNActionPerformed(evt);
+            }
+        });
 
         RetrievePasswordBTN.setBackground(new java.awt.Color(255, 153, 153));
         RetrievePasswordBTN.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         RetrievePasswordBTN.setText("Retrieve Password");
+        RetrievePasswordBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RetrievePasswordBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout BackgrndLayout = new javax.swing.GroupLayout(Backgrnd);
         Backgrnd.setLayout(BackgrndLayout);
@@ -113,6 +141,14 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AddPasswordBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPasswordBTNActionPerformed
+
+    }//GEN-LAST:event_AddPasswordBTNActionPerformed
+
+    private void RetrievePasswordBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrievePasswordBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RetrievePasswordBTNActionPerformed
 
     /**
      * @param args the command line arguments
