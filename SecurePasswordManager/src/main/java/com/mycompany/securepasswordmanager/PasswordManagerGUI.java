@@ -4,34 +4,42 @@
  */
 package com.mycompany.securepasswordmanager;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author liamf
  */
 public class PasswordManagerGUI extends javax.swing.JFrame {
-    
+
     //variables
-    private PasswordManager pm;
+    private PasswordManager passwordManager;
     private int passwordCount;
-    
+
     public PasswordManagerGUI() {
         initComponents();
-        pm = new PasswordManager();//initiliase PasswordManager
-        passwordCount = pm.getPasswordCount();//get no. of passwords in DB
-        
-        //loadAllPasswords();//when started display all saved&encrypted passwords in the DB
+        passwordManager = new PasswordManager();//initiliase dbManager
+        passwordCount = passwordManager.getPasswordCount();//get no. of passwords in DB
+
+        loadAllPasswords();//when started display all saved&encrypted passwords in the DB
         updatePasswordLabel();//this method shows how many passwords have been saved e.g "Saved PAsswords: 3"
     }
-    
-    private void addPassword(String domain, String plainPassword){
-        pm.addPassword(domain,plainPassword);//adds the password to manager
+
+    private void addPassword(String domain, String plainPassword) {
+        passwordManager.addPassword(domain, plainPassword);//adds the password to manager
         passwordCount++;
+        loadAllPasswords();
         updatePasswordLabel();//updates the no. of passwords counted
     }
-    
 
-    
-    private void updatePasswordLabel(){
+    private void loadAllPasswords() {
+        DisplayPasswordsTA.setText("");// Clear the text area first
+        for (PasswordEntry entry : passwordManager.getAllPasswords()) {
+            DisplayPasswordsTA.append("Domain: " + entry.getDomain() + ", Hashed Password: " + entry.getHashedPassword() + "\n");
+        }
+    }
+
+    private void updatePasswordLabel() {
         SavedPasswordsNumberLBL.setText("SavedPasswords: " + passwordCount);//increment counter every saved pass
     }
 
@@ -50,14 +58,15 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         DisplayPasswordsTA = new javax.swing.JTextArea();
         AddPasswordBTN = new javax.swing.JButton();
-        RetrievePasswordBTN = new javax.swing.JButton();
+        RemovePasswordsBTN = new javax.swing.JButton();
+        VerifyPasswordBTN1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Backgrnd.setBackground(new java.awt.Color(204, 255, 255));
 
         TitleLBL.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        TitleLBL.setText(" Secure Password Manager ");
+        TitleLBL.setText(" Secure Password Manager & Verifier ");
         TitleLBL.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         SavedPasswordsNumberLBL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -76,12 +85,21 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
             }
         });
 
-        RetrievePasswordBTN.setBackground(new java.awt.Color(255, 153, 153));
-        RetrievePasswordBTN.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        RetrievePasswordBTN.setText("Retrieve Password");
-        RetrievePasswordBTN.addActionListener(new java.awt.event.ActionListener() {
+        RemovePasswordsBTN.setBackground(new java.awt.Color(255, 102, 102));
+        RemovePasswordsBTN.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        RemovePasswordsBTN.setText("Remove All Saved Passwords");
+        RemovePasswordsBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RetrievePasswordBTNActionPerformed(evt);
+                RemovePasswordsBTNActionPerformed(evt);
+            }
+        });
+
+        VerifyPasswordBTN1.setBackground(new java.awt.Color(0, 153, 153));
+        VerifyPasswordBTN1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        VerifyPasswordBTN1.setText("Verify Password");
+        VerifyPasswordBTN1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerifyPasswordBTN1ActionPerformed(evt);
             }
         });
 
@@ -89,48 +107,53 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
         Backgrnd.setLayout(BackgrndLayout);
         BackgrndLayout.setHorizontalGroup(
             BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BackgrndLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackgrndLayout.createSequentialGroup()
                 .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BackgrndLayout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(TitleLBL))
+                        .addGap(40, 40, 40)
+                        .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(AddPasswordBTN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(VerifyPasswordBTN1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(BackgrndLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(AddPasswordBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(RetrievePasswordBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(SavedPasswordsNumberLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addGap(24, 24, 24)
+                        .addComponent(RemovePasswordsBTN)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(SavedPasswordsNumberLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+            .addGroup(BackgrndLayout.createSequentialGroup()
+                .addGap(138, 138, 138)
+                .addComponent(TitleLBL)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         BackgrndLayout.setVerticalGroup(
             BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackgrndLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(22, 22, 22)
                 .addComponent(TitleLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BackgrndLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
+                        .addGap(41, 41, 41)
                         .addComponent(SavedPasswordsNumberLBL)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(18, Short.MAX_VALUE))
                     .addGroup(BackgrndLayout.createSequentialGroup()
-                        .addGap(117, 117, 117)
+                        .addGap(94, 94, 94)
                         .addComponent(AddPasswordBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(RetrievePasswordBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addComponent(VerifyPasswordBTN1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(RemovePasswordsBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(Backgrnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(Backgrnd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,12 +166,39 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddPasswordBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPasswordBTNActionPerformed
-
+        String domain = JOptionPane.showInputDialog(this, "Enter Domain:");
+        String plainPassword = JOptionPane.showInputDialog(this, "Enter Password to be encrypted");
+        if (domain != null && plainPassword != null && !domain.isEmpty() && !plainPassword.isEmpty()) {
+            addPassword(domain, plainPassword);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter a valid domain and password.");
+        }
     }//GEN-LAST:event_AddPasswordBTNActionPerformed
 
-    private void RetrievePasswordBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrievePasswordBTNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RetrievePasswordBTNActionPerformed
+    private void RemovePasswordsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemovePasswordsBTNActionPerformed
+        int confirmation = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete all password entries?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        if (confirmation == JOptionPane.YES_OPTION) {
+            passwordManager.deleteAllPasswords();
+            passwordCount = 0;
+            loadAllPasswords();
+            updatePasswordLabel();
+        }
+    }//GEN-LAST:event_RemovePasswordsBTNActionPerformed
+
+    private void VerifyPasswordBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerifyPasswordBTN1ActionPerformed
+        String domain = JOptionPane.showInputDialog(this, "Enter Domain to Verify Password:");
+        String inputPassword = JOptionPane.showInputDialog(this, "Enter your Password to verify its correct.");
+        if (domain != null && inputPassword != null && !domain.isEmpty() && !inputPassword.isEmpty()) {
+            boolean isVerified = passwordManager.verifyPassword(domain, inputPassword);
+            if (isVerified) {
+                JOptionPane.showMessageDialog(this, inputPassword + " is your correct password.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Password you entered does not match your encrypted one.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter valid domain and password for verification.");
+        }
+    }//GEN-LAST:event_VerifyPasswordBTN1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,9 +239,10 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
     private javax.swing.JButton AddPasswordBTN;
     private javax.swing.JPanel Backgrnd;
     private javax.swing.JTextArea DisplayPasswordsTA;
-    private javax.swing.JButton RetrievePasswordBTN;
+    private javax.swing.JButton RemovePasswordsBTN;
     private javax.swing.JLabel SavedPasswordsNumberLBL;
     private javax.swing.JLabel TitleLBL;
+    private javax.swing.JButton VerifyPasswordBTN1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

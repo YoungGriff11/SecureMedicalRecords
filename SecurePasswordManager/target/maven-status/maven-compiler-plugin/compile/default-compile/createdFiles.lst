@@ -2,7 +2,7 @@ com\mycompany\securepasswordmanager\PasswordManagerGUI.class
 com\mycompany\securepasswordmanager\PasswordManager.class
 com\mycompany\securepasswordmanager\PasswordManagerGUI$1.class
 com\mycompany\securepasswordmanager\PasswordManagerGUI$2.class
-com\mycompany\securepasswordmanager\SecurePasswordManager.class
+com\mycompany\securepasswordmanager\DatabaseManager.class
 com\mycompany\securepasswordmanager\PasswordManagerGUI$3.class
-com\mycompany\securepasswordmanager\SecurePasswordManager$1.class
 com\mycompany\securepasswordmanager\PasswordEntry.class
+com\mycompany\securepasswordmanager\PasswordManagerGUI$4.class
