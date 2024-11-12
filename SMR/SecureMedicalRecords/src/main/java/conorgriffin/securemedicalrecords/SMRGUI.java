@@ -55,7 +55,7 @@ public class SMRGUI extends javax.swing.JFrame {
     
     private void getConnection() {
         try {
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/securemedicalrecords", "root", "Scrapydoo41?");
+            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/securemedicalrecords", "Username", "Password"); // fill in your credentials to access your own database
         } catch (SQLException e) {
             System.out.println("Error connecting" + e.getMessage());
         }
