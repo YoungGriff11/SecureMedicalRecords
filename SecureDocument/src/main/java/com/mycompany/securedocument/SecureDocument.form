@@ -29,15 +29,10 @@
                   <Component id="FilePathLbl" min="-2" max="-2" attributes="0"/>
                   <Component id="SignatureLbl" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="FilePathTf" min="-2" pref="403" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="SignatureTf" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="FilePathTf" alignment="0" min="-2" pref="403" max="-2" attributes="0"/>
+                  <Component id="SignatureTf" alignment="0" pref="409" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -107,7 +102,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="24" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Secure Document Signer"/>
+        <Property name="text" type="java.lang.String" value="Secure Document Singning"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="FilePathTf">
