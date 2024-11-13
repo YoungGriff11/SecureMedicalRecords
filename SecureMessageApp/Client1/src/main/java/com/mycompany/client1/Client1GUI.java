@@ -4,15 +4,22 @@
  */
 package com.mycompany.client1;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.*;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author codyc
  */
+
 public class Client1GUI extends javax.swing.JFrame {
 
+    private static final String SECRET_KEY = "1234567890123456";
     private static InetAddress host;
     private static final int PORT = 1234;
     private static Socket link;
@@ -21,8 +28,8 @@ public class Client1GUI extends javax.swing.JFrame {
 
     public Client1GUI() {
         initComponents();
-        initializeConnection();
-        startMessageListener();
+        initializeConnection();//connection with th eserver 
+        startMessageListener();//waiting to recive messages
     }
 
     private void initializeConnection() {
@@ -32,21 +39,41 @@ public class Client1GUI extends javax.swing.JFrame {
             in = new BufferedReader(new InputStreamReader(link.getInputStream()));
             out = new PrintWriter(link.getOutputStream(), true);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     private void startMessageListener() {
         new Thread(() -> {
             try {
-                String response;
-                while ((response = in.readLine()) != null) {
-                    DisplayBox.setText(DisplayBox.getText() + "\n" + response);
+                String response; //varible for messages
+                while ((response = in.readLine()) != null) {//reads messages from server
+                    String decryptedMessage = decrypt(response);//decrypts recived messages
+                    System.out.println("Encryped Message: " + response);//adds the encrypted message to the log
+                    System.out.println("Decrypted Message: " + decryptedMessage);//adds the decrypted message to the log
+                    DisplayBox.setText(DisplayBox.getText() + "\n" + decryptedMessage);//displays the decrypted message
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception ex) {
+                Logger.getLogger(Client1GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
+    }
+
+    private String encrypt(String data) throws Exception {
+        SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encryptedData = cipher.doFinal(data.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedData);
+    }
+
+    private String decrypt(String encryptedData) throws Exception {
+        SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
+        return new String(decryptedData);
     }
 
     /**
@@ -110,9 +137,13 @@ public class Client1GUI extends javax.swing.JFrame {
 
     private void msgBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgBoxActionPerformed
         // TODO add your handling code here:
-        String message = msgBox.getText();
-        out.println(message); // Send message to server 
-        msgBox.setText("");
+        String message = msgBox.getText();//gets message from the message text box
+        try{
+        out.println(encrypt("Client 1: " + message)); //send message to server
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        msgBox.setText("");//clears message box
     }//GEN-LAST:event_msgBoxActionPerformed
 
     /**
