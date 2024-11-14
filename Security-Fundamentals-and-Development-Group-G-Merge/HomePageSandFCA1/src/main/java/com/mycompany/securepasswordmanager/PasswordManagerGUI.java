@@ -60,6 +60,7 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
         AddPasswordBTN = new javax.swing.JButton();
         RemovePasswordsBTN = new javax.swing.JButton();
         VerifyPasswordBTN1 = new javax.swing.JButton();
+        HomeBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,6 +104,13 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
             }
         });
 
+        HomeBTN.setText("Home");
+        HomeBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HomeBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout BackgrndLayout = new javax.swing.GroupLayout(Backgrnd);
         Backgrnd.setLayout(BackgrndLayout);
         BackgrndLayout.setHorizontalGroup(
@@ -116,7 +124,9 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
                             .addComponent(VerifyPasswordBTN1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(BackgrndLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(RemovePasswordsBTN)))
+                        .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(HomeBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RemovePasswordsBTN))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(SavedPasswordsNumberLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -132,21 +142,22 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
             .addGroup(BackgrndLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(TitleLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(BackgrndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(BackgrndLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addComponent(SavedPasswordsNumberLBL)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(BackgrndLayout.createSequentialGroup()
                         .addGap(94, 94, 94)
                         .addComponent(AddPasswordBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(VerifyPasswordBTN1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(54, 54, 54)
                         .addComponent(RemovePasswordsBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(HomeBTN)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -200,6 +211,11 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_VerifyPasswordBTN1ActionPerformed
 
+    private void HomeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBTNActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_HomeBTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -239,6 +255,7 @@ public class PasswordManagerGUI extends javax.swing.JFrame {
     private javax.swing.JButton AddPasswordBTN;
     private javax.swing.JPanel Backgrnd;
     private javax.swing.JTextArea DisplayPasswordsTA;
+    private javax.swing.JButton HomeBTN;
     private javax.swing.JButton RemovePasswordsBTN;
     private javax.swing.JLabel SavedPasswordsNumberLBL;
     private javax.swing.JLabel TitleLBL;

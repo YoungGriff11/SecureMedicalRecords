@@ -304,11 +304,7 @@ public class SMRGUI extends javax.swing.JFrame {
 
     private void homeBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBTNActionPerformed
         // TODO add your handling code here:
-        SMRGUI SMR = new SMRGUI();
-        SMR.setVisible(false);
-
-        HomePageGUI HomeGUI = new HomePageGUI();
-        HomeGUI.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_homeBTNActionPerformed
 
     /**
