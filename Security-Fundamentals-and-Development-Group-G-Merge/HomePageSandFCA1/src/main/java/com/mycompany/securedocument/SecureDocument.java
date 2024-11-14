@@ -47,7 +47,7 @@ public class SecureDocument extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         TitleLbl.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        TitleLbl.setText("Secure Document Signer");
+        TitleLbl.setText("Secure Document Signing");
 
         FilePathTf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
